@@ -68,6 +68,19 @@ class TestEvidenceHealth(unittest.TestCase):
         self.assertEqual(result.status, EvidenceHealthStatus.HEALTHY)
         self.assertNotIn("unpaired_tool_call", [reason.code for reason in result.reasons])
 
+    def test_failed_llm_call_error_is_a_terminal_outcome(self):
+        events = [
+            event(EventType.SESSION_START, 1.0, "start"),
+            event(EventType.LLM_REQUEST, 2.0, "llm-request"),
+            event(EventType.ERROR, 3.0, "llm-error", parent_id="llm-request"),
+            event(EventType.SESSION_END, 4.0, "end"),
+        ]
+
+        result = assess_evidence_health(events, session_finalized=True)
+
+        self.assertEqual(result.status, EvidenceHealthStatus.HEALTHY)
+        self.assertNotIn("unpaired_llm_request", [reason.code for reason in result.reasons])
+
     def test_out_of_order_tool_result_is_partial(self):
         events = [
             event(EventType.SESSION_START, 1.0, "start"),
