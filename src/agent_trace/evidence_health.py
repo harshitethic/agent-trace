@@ -101,6 +101,7 @@ _RELATIONSHIPS = (
         duplicate_outcome_code="duplicate_llm_outcome",
         out_of_order_outcome_code="out_of_order_llm_outcome",
         label="LLM",
+        error_is_terminal=True,
     ),
 )
 
