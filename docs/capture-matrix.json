@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "providers": [
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "capture_method": "cli_hooks",
+      "setup_command": "agent-strace setup --cli claude",
+      "config_location": "~/.claude/settings.json",
+      "rollback": "Remove the AgentTrace hook commands written by agent-strace setup from ~/.claude/settings.json.",
+      "verification_status": "unverified",
+      "tested_version": null,
+      "last_verified": null,
+      "fixture_test_reference": null,
+      "coverage": {
+        "session_start": "captured",
+        "session_end": "captured",
+        "prompt": "captured",
+        "response": "captured",
+        "tool": "captured",
+        "file": "provider_defined",
+        "command": "provider_defined",
+        "error": "provider_defined",
+        "stop": "captured"
+      },
+      "privacy": "Events pass through AgentTrace's normal redaction path; hook visibility is limited to fields emitted by the provider.",
+      "known_gaps": [
+        "File and command semantics depend on the tool payload exposed by Claude Code hooks.",
+        "This entry is intentionally marked unverified until a clean-environment versioned verification run is recorded."
+      ]
+    },
+    {
+      "id": "codex",
+      "name": "OpenAI Codex",
+      "capture_method": "cli_hooks",
+      "setup_command": "agent-strace setup --cli codex",
+      "config_location": "~/.codex/hooks.json",
+      "rollback": "Remove the AgentTrace hook commands written by agent-strace setup from ~/.codex/hooks.json.",
+      "verification_status": "unverified",
+      "tested_version": null,
+      "last_verified": null,
+      "fixture_test_reference": "tests/test_codex_hooks.py",
+      "coverage": {
+        "session_start": "captured",
+        "session_end": "unavailable",
+        "prompt": "captured",
+        "response": "captured",
+        "tool": "captured",
+        "file": "provider_defined",
+        "command": "provider_defined",
+        "error": "provider_defined",
+        "stop": "unavailable"
+      },
+      "privacy": "Events pass through AgentTrace's normal redaction path; hook visibility is limited to fields emitted by the provider.",
+      "known_gaps": [
+        "The current integration documentation does not claim a Codex session-end or stop hook.",
+        "File, command, and error coverage depends on PreToolUse/PostToolUse payloads.",
+        "This entry is intentionally marked unverified until a clean-environment versioned verification run is recorded."
+      ]
+    }
+  ]
+}
